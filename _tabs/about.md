@@ -9,9 +9,18 @@ order: 1
 
 I am a DevOps Engineer focused on building secure, reliable, and cost-aware delivery platforms across GCP and AWS. My work spans Kubernetes, infrastructure as code, CI/CD, observability, incident response, and cloud security.
 
-At Modeso, I support enterprise products running across Cloud Run, private GKE clusters, and AWS environments. I work closely with engineering, QA, and business teams to standardize delivery, improve reliability, strengthen access controls, and identify cost-optimization opportunities.
+At Modeso, I support enterprise products running across Cloud Run, private GKE clusters, and AWS environments. I work closely with engineering, QA, and business teams to standardize delivery, improve reliability, strengthen access controls, build useful operational visibility, and identify cost-optimization opportunities.
 
 Alongside my primary role, I deliver project-based DevOps consulting engagements. This has included building a Kubernetes platform on GCP and later migrating its environments to AWS EKS, establishing production infrastructure for a Saudi fintech platform, and operating shared GCP foundations across multiple software products.
+
+My goal is not only to implement tools. I transfer DevOps practices into the teams I support through reusable standards, secure self-service workflows, shared observability, clear operational ownership, and documentation that makes the platform easier to maintain after delivery.
+
+### Selected Case Studies
+
+- [Scaling Terraform Governance Across 16+ GCP Projects]({% post_url 2026-07-12-terraform-governance-at-scale %})
+- [Shipping a Fintech Platform in Three Weeks Without Blocking Development]({% post_url 2026-07-13-fintech-platform-three-week-delivery %})
+- [Standardizing Fragmented Product Infrastructure on GCP]({% post_url 2026-07-14-standardizing-fragmented-infrastructure-on-gcp %})
+- [From Private GKE to AWS EKS: A Practical Migration Playbook]({% post_url 2026-07-16-gke-to-eks-migration-playbook %})
 
 ### Contact
 
@@ -22,11 +31,12 @@ Alongside my primary role, I deliver project-based DevOps consulting engagements
 ### Core Areas
 
 - Kubernetes platforms on GKE and EKS
-- Terraform, Helm, Argo CD, and GitOps delivery
+- Terraform governance, state design, Helm, Argo CD, and GitOps delivery
 - Jenkins, Cloud Build, GitHub Actions, and GitLab CI/CD
 - Secure access with IAM, PAM, IAP, workload identity, and secrets management
-- Observability and incident response with Cloud Operations, PagerDuty, and Opsgenie
+- Observability and incident response with Managed Prometheus, Cloud Operations, PagerDuty, and Opsgenie
 - Cloud cost optimization and platform standardization
+- Team enablement, self-service workflows, and shared DevOps ownership
 
 ### Certifications
 
