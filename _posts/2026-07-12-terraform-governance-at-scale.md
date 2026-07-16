@@ -13,7 +13,7 @@ image:
 
 Managing one Terraform project is mostly an infrastructure problem. Managing more than 16 active cloud projects is also a governance problem: execution must be consistent, drift must be visible, state must remain maintainable, and teams need enough observability to make safe decisions without waiting for DevOps.
 
-At Modeso, I worked as one of the DevOps engineers deploying and supporting enterprise products including TWINT, 1LIMS, aumico, dentalaxess, Lidl, Visana, Recotree, and In-Control Nemistech. This article describes several improvements I designed and implemented while supporting that portfolio.
+At Modeso, I worked as one of the DevOps engineers deploying and supporting a portfolio of enterprise products across multiple cloud projects. This article describes several improvements I designed and implemented while supporting that portfolio.
 
 The common objective was not to add more tools. It was to create a safer operating model that engineering and QA teams could understand and use.
 
@@ -67,7 +67,7 @@ The result is a lightweight daily control: the team sees unexpected differences 
 
 ## Decomposing a Large Terraform State Safely
 
-One of the most sensitive changes involved the TWINT Terraform repository. Development and production had each grown around a large state containing many resources and modules. That structure increased plan time, lock contention, review noise, and the potential blast radius of an incorrect operation.
+One of the most sensitive changes involved a large Terraform repository for one of Modeso's enterprise projects. Development and production had each grown around a large state containing many resources and modules. That structure increased plan time, lock contention, review noise, and the potential blast radius of an incorrect operation.
 
 I proposed separating the infrastructure by operational domain. The repository was reorganized into four independently managed areas for each environment:
 
@@ -129,13 +129,13 @@ Cost optimization becomes sustainable when it changes the operating model. A one
 
 ## Automating Scheduled and On-Demand Environments
 
-I applied the same operating-model principle to TWINT and aumico, where non-production Kubernetes and database capacity did not need to run at full size overnight.
+I applied the same operating-model principle to two Modeso projects where non-production Kubernetes and database capacity did not need to run at full size overnight.
 
-For TWINT, the automation records the active size of each selected GKE node pool before scaling it to zero, stops the selected Cloud SQL instances, and temporarily disables alerts that would otherwise fire because of the planned shutdown. The morning workflow reads the previous successful scale-down output, restores each node pool to its recorded size, starts only the databases that were stopped, waits for the platform to stabilize, and re-enables the monitoring policies.
+For the first project, the automation records the active size of each selected GKE node pool before scaling it to zero, stops the selected Cloud SQL instances, and temporarily disables alerts that would otherwise fire because of the planned shutdown. The morning workflow reads the previous successful scale-down output, restores each node pool to its recorded size, starts only the databases that were stopped, waits for the platform to stabilize, and re-enables the monitoring policies.
 
 This preserves the environment's real operating size instead of relying on hard-coded morning capacity. It also prevents scheduled shutdowns from creating false incidents.
 
-aumico required a more granular model because development, PAT, patch, staging, and testing shared cluster capacity. The scale-down workflow reduces application deployments and stateful workloads, lowers the node pools, and stops shared compute that is not needed overnight.
+The second project required a more granular model because development, acceptance, patch, staging, and testing environments shared cluster capacity. The scale-down workflow reduces application deployments and stateful workloads, lowers the node pools, and stops shared compute that is not needed overnight.
 
 Scale-up is requested per environment rather than starting the entire platform:
 
@@ -150,11 +150,11 @@ This allowed developers and business users to activate the environment they need
 
 ## Managing Kubernetes Delivery with App-of-Apps
 
-For both TWINT and aumico, I worked with Argo CD's app-of-apps pattern to manage large sets of services declaratively. Environment value files define the applications, namespaces, repositories, Helm values, and Argo CD projects that should exist.
+Across both projects, I worked with Argo CD's app-of-apps pattern to manage large sets of services declaratively. Environment value files define the applications, namespaces, repositories, Helm values, and Argo CD projects that should exist.
 
 The model provides one controlled entry point for onboarding or changing services while still producing separate Argo CD `Application` resources. Stateless services can follow the standard synchronization policy, while data services use stricter behavior, including manual synchronization and protection from automatic pruning.
 
-Combining app-of-apps with the aumico scale-up workflow was especially useful: infrastructure capacity starts first, stateful components become ready, and Argo CD then reconciles only the applications for the environment that was requested.
+Combining app-of-apps with the per-environment scale-up workflow was especially useful: infrastructure capacity starts first, stateful components become ready, and Argo CD then reconciles only the applications for the environment that was requested.
 
 ## Rotating Production Support
 

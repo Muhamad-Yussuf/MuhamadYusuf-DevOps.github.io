@@ -13,9 +13,9 @@ image:
 
 Software houses often inherit infrastructure one product at a time. Each new application arrives with its own provider, deployment script, credentials, backup method, monitoring assumptions, and monthly bill. The systems may all run, but operating them as a portfolio becomes slow and risky.
 
-That was the starting point when I began supporting Faradah. Applications were distributed across different cloud providers and followed inconsistent infrastructure, CI/CD, access, and cost patterns.
+That was the starting point when I began supporting a Saudi software house. Applications were distributed across different cloud providers and followed inconsistent infrastructure, CI/CD, access, and cost patterns.
 
-My objective was to create one understandable operating model across products such as Hebaa, WaqfNami, Wdeem, and other internal and client platforms—without forcing every application to become technically identical.
+My objective was to create one understandable operating model across several internal and client products without forcing every application to become technically identical.
 
 ## Standardize the Platform Contract
 

@@ -11,7 +11,7 @@ image:
   alt: Fintech platform production delivery and secure Saudi network access
 ---
 
-When I joined Enfaq, the immediate objective was clear: take a running corporate-finance platform to a production-ready operating model in approximately three weeks.
+During a Saudi fintech engagement, the immediate objective was clear: take a running corporate-finance platform to a production-ready operating model in approximately three weeks.
 
 The difficult part was not only the deadline. Engineering was still developing against the existing environment, the application was composed of Java microservices with Redis and SQL dependencies, and a partner-bank integration could be reached only through approved Saudi network paths.
 
@@ -122,6 +122,6 @@ The most useful DevOps work in this situation was not simply building GKE. It wa
 - Network constraints were translated into an architecture the team could operate.
 - Migration work did not stop feature development.
 
-The result was a production-ready platform delivered under a tight timeline, with secure cloud foundations, repeatable releases, and a workable path for Al Rajhi Bank integration testing.
+The result was a production-ready platform delivered under a tight timeline, with secure cloud foundations, repeatable releases, and a workable path for partner-bank integration testing.
 
 The broader lesson is that speed and control are not opposites. Parallel migration, reusable infrastructure, clear readiness criteria, and close collaboration make it possible to move quickly without turning the final cutover into an experiment.
