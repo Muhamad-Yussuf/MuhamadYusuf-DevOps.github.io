@@ -22,7 +22,7 @@ description: Practical notes on Kubernetes, cloud infrastructure, secure deliver
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
-url: "https://MuhamadYusuf-DevOps.github.io"
+url: "https://muhamad-yussuf.github.io"
 
 github:
   username: Muhamad-Yussuf
@@ -147,7 +147,7 @@ pwa:
 paginate: 10
 
 # The base URL of your site
-baseurl: ""
+baseurl: "/MuhamadYusuf-DevOps.github.io"
 
 # ------------ The following options are not recommended to be modified ------------------
 

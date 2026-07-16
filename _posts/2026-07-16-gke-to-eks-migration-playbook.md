@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "From Private GKE to AWS EKS: A Practical Migration Playbook"
-date: 2026-07-16 09:00:00 +0300
+date: 2026-07-15 09:00:00 +0300
 author: Muhamad Yusuf
 categories: [Kubernetes, Cloud]
 tags: [gke, eks, terraform, helm, argocd, devsecops, migration]
