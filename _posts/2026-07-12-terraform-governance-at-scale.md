@@ -5,7 +5,7 @@ date: 2026-07-12 09:00:00 +0300
 author: Muhamad Yusuf
 categories: [Platform Engineering, GCP]
 tags: [terraform, cloud-build, cloud-scheduler, gke, prometheus, security, cost-optimization]
-description: How I centralized Terraform execution, automated drift detection, decomposed large state files, improved QA observability, and built cost controls across a multi-project GCP portfolio.
+description: How I centralized Terraform execution, automated drift detection, decomposed large state files, introduced app-of-apps GitOps, improved QA observability, and automated cost controls across a multi-project GCP portfolio.
 image:
   path: /assets/img/posts/terraform-governance.png
   alt: Terraform governance and observability across multiple GCP projects
@@ -111,7 +111,7 @@ This was a good example of platform work improving team capability rather than o
 
 ## Turning Billing Data into an Operating Model
 
-For the 1LIMS non-production portfolio, I analyzed one month of billing exports across testing, UAT, and performance environments. The baseline was CHF 354.05 per month, concentrated in Cloud SQL, Cloud Run, and networking.
+For one three-environment non-production portfolio, I analyzed a month of billing exports across testing, UAT, and performance. The baseline was CHF 354.05 per month, concentrated in Cloud SQL, Cloud Run, and networking.
 
 The proposed first phase combined:
 
@@ -127,6 +127,41 @@ The estimated target was CHF 118.03 per month, a projected saving of CHF 236.02 
 
 Cost optimization becomes sustainable when it changes the operating model. A one-time rightsizing exercise is useful, but automated schedules, delegated workflows, monitoring, and explicit availability expectations prevent the same waste from returning.
 
+## Automating Scheduled and On-Demand Environments
+
+I applied the same operating-model principle to TWINT and aumico, where non-production Kubernetes and database capacity did not need to run at full size overnight.
+
+For TWINT, the automation records the active size of each selected GKE node pool before scaling it to zero, stops the selected Cloud SQL instances, and temporarily disables alerts that would otherwise fire because of the planned shutdown. The morning workflow reads the previous successful scale-down output, restores each node pool to its recorded size, starts only the databases that were stopped, waits for the platform to stabilize, and re-enables the monitoring policies.
+
+This preserves the environment's real operating size instead of relying on hard-coded morning capacity. It also prevents scheduled shutdowns from creating false incidents.
+
+aumico required a more granular model because development, PAT, patch, staging, and testing shared cluster capacity. The scale-down workflow reduces application deployments and stateful workloads, lowers the node pools, and stops shared compute that is not needed overnight.
+
+Scale-up is requested per environment rather than starting the entire platform:
+
+1. The workflow validates the requested environment and exits if it is already active.
+2. It counts the environments currently running.
+3. Application and shared data-node capacity are calculated from active demand and capped safely.
+4. Shared database compute starts only when the first environment is activated.
+5. Stateful workloads are restored in a controlled order.
+6. Only the Argo CD applications targeting the requested namespace are synchronized.
+
+This allowed developers and business users to activate the environment they needed without paying for every environment continuously.
+
+## Managing Kubernetes Delivery with App-of-Apps
+
+For both TWINT and aumico, I worked with Argo CD's app-of-apps pattern to manage large sets of services declaratively. Environment value files define the applications, namespaces, repositories, Helm values, and Argo CD projects that should exist.
+
+The model provides one controlled entry point for onboarding or changing services while still producing separate Argo CD `Application` resources. Stateless services can follow the standard synchronization policy, while data services use stricter behavior, including manual synchronization and protection from automatic pruning.
+
+Combining app-of-apps with the aumico scale-up workflow was especially useful: infrastructure capacity starts first, stateful components become ready, and Argo CD then reconciles only the applications for the environment that was requested.
+
+## Rotating Production Support
+
+Platform ownership also included approximately two weeks per month in a rotating 24/7 production-support schedule. I configured and maintained application, Kubernetes, database, load-balancer, and infrastructure alerts that fed the on-call process through Cloud Operations, PagerDuty, and Opsgenie.
+
+The work included release support, triage, incident coordination, postmortems, alert tuning, and production hardening. Scheduled maintenance automation also controlled expected alerts during planned shutdown and restored them when environments returned, reducing noise without hiding real failures.
+
 ## What Made These Changes Valuable
 
 The technical components mattered, but their value came from how teams used them:
@@ -135,6 +170,7 @@ The technical components mattered, but their value came from how teams used them
 - DevOps received auditable Terraform execution and early drift visibility.
 - QA received actionable platform metrics during testing.
 - Product teams received clearer cost and availability trade-offs.
+- Development teams could activate only the non-production environments they needed.
 - Security controls became part of routine delivery rather than a final review step.
 - On-call work through PagerDuty and Opsgenie had better logs, metrics, and infrastructure context.
 
