@@ -7,9 +7,6 @@
   icon: "fab fa-linkedin"
   url: "https://www.linkedin.com/in/muhamad-devops/"
 
-- type: twitter
-  icon: "fa-brands fa-x-twitter"
-
 - type: email
   icon: "fas fa-envelope"
   noblank: true # open link in current tab
