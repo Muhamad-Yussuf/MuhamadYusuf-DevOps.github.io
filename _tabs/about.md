@@ -22,6 +22,10 @@ My goal is not only to implement tools. I transfer DevOps practices into the tea
 - [Standardizing Fragmented Product Infrastructure on GCP]({% post_url 2026-07-14-standardizing-fragmented-infrastructure-on-gcp %})
 - [From Private GKE to AWS EKS: A Practical Migration Playbook]({% post_url 2026-07-16-gke-to-eks-migration-playbook %})
 
+### External Publication
+
+- [Azure DevOps Process Migration Guide (Microsoft Process Migrator)](https://devopsvisions.github.io/blog/posts/azure-devops-process-migration/) — authored by Muhamad Yusuf and published by the DevOps Visions Community.
+
 ### Contact
 
 - [Email](mailto:Mohamedyoussef019@gmail.com)
